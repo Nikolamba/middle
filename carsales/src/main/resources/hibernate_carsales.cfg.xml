@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/car_sales</property>
+        <property name="connection.username">postgres</property>
+        <property name="connection.password">123456</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL94Dialect</property>
+        <property name="show_sql" >true</property>
+
+        <mapping class="carsales.models.User"/>
+        <mapping class="carsales.models.BodyType"/>
+        <mapping class="carsales.models.Model"/>
+        <mapping class="carsales.models.Brand"/>
+        <mapping class="carsales.models.Car"/>
+
+    </session-factory>
+</hibernate-configuration>
