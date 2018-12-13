@@ -27,7 +27,7 @@ public class AjaxController {
 
     @GetMapping("/filters")
     @ResponseBody
-    public List<Car> getAllCarsByFilters(@RequestParam Integer brandId,
+    public Iterable<Car> getAllCarsByFilters(@RequestParam Integer brandId,
                                          @RequestParam Boolean onlyFoto, @RequestParam Boolean currentData) {
         Map<String, Integer> filterMap = new HashMap<>();
         if (brandId != -1) {
@@ -52,13 +52,13 @@ public class AjaxController {
 
     @GetMapping("/allbrand")
     @ResponseBody
-    public List<Brand> getAllBrands() {
+    public Iterable<Brand> getAllBrands() {
         return logic.findAllBrands();
     }
 
     @GetMapping ("/allcars")
     @ResponseBody
-    public List<Car> getAllCars() {
+    public Iterable<Car> getAllCars() {
         return logic.findAllCars();
     }
 
