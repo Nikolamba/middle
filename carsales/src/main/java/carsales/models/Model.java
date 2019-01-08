@@ -30,6 +30,10 @@ public class Model {
         this.brand = brand;
     }
 
+    public Model(String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

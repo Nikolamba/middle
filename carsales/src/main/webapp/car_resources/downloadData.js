@@ -18,6 +18,7 @@ function registration() {
 }
 
 function fillTable(response) {
+    var picturePath = 'http://localhost:8080/carsales/car_resources/';
     $.each(response, function () {
         var year = 0, month = 0, day = 0;
         if (this.data !== null) {
@@ -26,7 +27,7 @@ function fillTable(response) {
             month = curData.getMonth() + 1;
             day = curData.getDate();
         }
-        $('#cars_table').append('<tr><td><img src="' + this.picturePath + '"></td>'
+        $('#cars_table').append('<tr><td><img src="' + picturePath  + this.picturePath + '"></td>'
             + '<td>Brand: ' + this.model.brand.name
             + '<br>Model: ' + this.model.name
             + '<br>Color: ' + this.color

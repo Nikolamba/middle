@@ -6,6 +6,9 @@ import org.hibernate.annotations.Filters;
 import org.hibernate.annotations.ParamDef;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Objects;
 
@@ -38,12 +41,14 @@ public class Car {
     @Column(name = "id")
     private int id;
 
+    @Min(1950) @Max(2018)
     @Column(name = "year")
     private int year;
 
     @Column(name = "status")
     private boolean status;
 
+    @Size(min = 2, max = 30)
     @Column(name = "color")
     private String color;
 
@@ -150,12 +155,6 @@ public class Car {
 
     public void setData(Date data) {
         this.data = data;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("[Car id: %s, Car_model: %s, Body_type: %s, Seller: %s]",
-                id, model.getName(), bodyType.getName(), seller.getName());
     }
 
     @Override

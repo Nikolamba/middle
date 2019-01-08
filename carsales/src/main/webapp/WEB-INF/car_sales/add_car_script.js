@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    $('#brands').change(function () {
+ $('#brands').change(function () {
         var brand = $('#brands').val();
         $.ajax({
             type: 'get',
@@ -11,19 +11,26 @@ $(document).ready(function () {
                 alert(xhr.responseText + '|\n' + status + '|\n' + error);
             }],
             success: [function (response) {
-                $('#models').attr('disabled', false).empty();
-                $.each(response, function () {
-                    $('#models').append('<option value = ' + this.id + '>' + this.name + '</option>');
-                })
+                $('#models').attr('disabled', false);
+                 $.each(response, function () {
+                      $('#models').append($("<option></option>")
+                          .attr('value', this.id)
+                          .text(this.name));
+                 })
             }]
         })
     });
+
 
     $('#models').change(function () {
         if ($('#models').val() === undefined) {
             $('#models').after('wrong input');
             disabledButton();
         }
+        var model = $('#model').val();
+        model.id = $('#models').val();
+        model.name = $('#models').text();
+        $('#models').val(model);
     });
 
     $('#year').change(function () {

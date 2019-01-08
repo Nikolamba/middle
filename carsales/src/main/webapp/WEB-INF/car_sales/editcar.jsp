@@ -18,7 +18,7 @@
 </head>
 
 <body>
-<h1>Edit car <c:out value="${sessionScope.user.name}"/></h1>
+<h1>Edit car <c:out value="${pageContext.request.userPrincipal.name}"/></h1>
 
 <c:if test="${requestScope.error != ''}">
     <div style="background-color: red">

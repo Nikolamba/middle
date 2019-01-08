@@ -5,6 +5,7 @@ import carsales.models.*;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,36 +24,31 @@ import java.util.Map;
 @Service
 public class LogicLayer {
     @Autowired
-    DAOCarImp daoCar;
+    private DAOCarImp daoCar;
     @Autowired
-    DAOModelImp daoModel;
+    private DAOModelImp daoModel;
     @Autowired
-    DAOBodyTypeImp daoBodyType;
+    private DAOBodyTypeImp daoBodyType;
     @Autowired
-    DAOBrandImp daoBrand;
+    private DAOBrandImp daoBrand;
     @Autowired
-    DAOUserImp daoUser;
+    private DAOUserImp daoUser;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    public boolean addCar(HttpServletRequest req, Map<String, String> fields) {
-        if (fields.get("year") == null || fields.get("color") == null
-                || fields.get("models") == null || fields.get("body_type") == null
-                || req.getSession().getAttribute("user") == null) {
-            req.setAttribute("error", "adding error");
-            return false;
-        } else {
-            Car car = new Car(Integer.valueOf(fields.get("year")),
-                    fields.get("color"),
-                    daoModel.findById(Integer.valueOf(fields.get("models"))).orElse(null),
-                    daoBodyType.findById(Integer.valueOf(fields.get("body_type"))).orElse(null),
-                    (User) req.getSession().getAttribute("user")
-            );
-            car.setPicturePath(fields.get("picturePath"));
-            daoCar.save(car);
-            return true;
-        }
+    public void addCar(Car car) {
+        daoCar.save(car);
+    }
+
+    public BodyType findBodyTypeByName(String name) {
+        return daoBodyType.findBodyTypeByName(name).orElse(null);
+   }
+
+    public Model findModelById(Integer id) {
+        return daoModel.findById(id).orElse(null);
     }
 
     public User findUserByName(String name) {
@@ -86,7 +82,7 @@ public class LogicLayer {
         if (target.stream().anyMatch(user -> user.getName().trim().equals(name))) {
             return "user with this name is already registered";
         } else {
-            daoUser.save(new User(name, pass));
+            daoUser.save(new User(name, passwordEncoder.encode(pass)));
             return "registration successfully completed";
         }
     }
@@ -102,14 +98,6 @@ public class LogicLayer {
             }
         }
         return daoCar.findAll();
-    }
-
-    public void addUser(User obj) {
-        daoUser.save(obj);
-    }
-
-    public boolean isUserCredentional(String name, String pass) {
-        return daoUser.existsByNameAndPass(name, pass);
     }
 
     public Car findById(Integer carId) {

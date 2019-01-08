@@ -1,0 +1,43 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+    <http auto-config="true" use-expressions="true">
+
+        <headers>
+            <cache-control />
+        </headers>
+
+        <intercept-url pattern="/app/signin**" access="isAnonymous()" />
+        <intercept-url pattern="/app/cars" access="permitAll()" />
+        <intercept-url pattern="/app/registration" access="permitAll()" />
+        <intercept-url pattern="/app/addcar**" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/app/editcar**" access="hasRole('ROLE_USER')" />
+        <form-login
+                login-page="/app/signin"
+                login-processing-url="/j_spring_security_check"
+                default-target-url="/app/addcar"
+                authentication-failure-url="/app/signin.jsp?error"
+                username-parameter="name"
+                password-parameter="pass"
+        />
+        <access-denied-handler error-page="/app/signin" />
+        <!--<logout logout-url="/app/logout" logout-success-url="/app/addcar"/>-->
+        <csrf disabled="true"/>
+    </http>
+
+    <beans:bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+    <authentication-manager>
+        <authentication-provider>
+            <password-encoder ref="bcryptEncoder"/>
+            <jdbc-user-service data-source-ref="dataSource"
+            users-by-username-query="select name, pass, true from users where name = ?"
+            authorities-by-username-query="select name, 'ROLE_USER' from users where name = ?"/>
+        </authentication-provider>
+    </authentication-manager>
+
+</beans:beans>

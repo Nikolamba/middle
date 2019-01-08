@@ -30,8 +30,7 @@ public class AjaxController {
     public Iterable<Car> getAllCarsByFilters(@RequestParam Integer brandId,
                                          @RequestParam Boolean onlyFoto, @RequestParam Boolean currentData) {
         Map<String, Integer> filterMap = new HashMap<>();
-        if (brandId != -1) {
-            filterMap.put("brandFilter", brandId);
+        if (brandId != -1) { filterMap.put("brandFilter", brandId);
         }
         if (onlyFoto) {
             filterMap.put("onlyFotoFilter", 1);
